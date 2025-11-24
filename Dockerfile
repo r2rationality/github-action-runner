@@ -24,8 +24,9 @@ USER dev
 WORKDIR /home/dev
 RUN mkdir actions-runner
 WORKDIR /home/dev/actions-runner
-RUN curl -o actions-runner-linux-x64-2.308.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.308.0/actions-runner-linux-x64-2.308.0.tar.gz
-RUN tar xzf ./actions-runner-linux-x64-2.308.0.tar.gz
+RUN curl -o actions-runner-linux-x64-2.329.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.329.0/actions-runner-linux-x64-2.329.0.tar.gz
+RUN echo "194f1e1e4bd02f80b7e9633fc546084d8d4e19f3928a324d512ea53430102e1d  actions-runner-linux-x64-2.329.0.tar.gz" | shasum -a 256 -c
+RUN tar xzf ./actions-runner-linux-x64-2.329.0.tar.gz
 RUN --mount=type=secret,id=token,uid=1001,gid=1001 echo "Uncached step" $(date) &&  TOKEN=$(cat /run/secrets/token) && ./config.sh --url $REPO --token $TOKEN --name "dockerized-runner"
 COPY start.sh /home/dev/
 CMD [ "/bin/bash", "/home/dev/start.sh" ]
