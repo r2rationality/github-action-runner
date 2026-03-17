@@ -20,7 +20,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     mkdir -p /etc/apt/keyrings && \
     gpg --keyserver keyserver.ubuntu.com --recv-keys 31F54F3E108EAD31 && \
-    gpg --fingerprint 31F54F3E108EAD31 | grep -q "EXPECTED FULL FINGERPRINT HERE" && \
+    gpg --fingerprint 31F54F3E108EAD31 | grep -q "7752 0E7E B418 00A9 3E3E  0D94 31F5 4F3E 108E AD31" && \
     gpg --export 31F54F3E108EAD31 > /etc/apt/keyrings/custom.gpg
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
