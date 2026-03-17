@@ -13,13 +13,14 @@ RUN mv /etc/apt/sources.list /etc/apt/sources.list.orig && \
     sed "s/archive.ubuntu.com/${APT_MIRROR}/g" /etc/apt/sources.list.orig \
         > /etc/apt/sources.list
 
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl git sudo docker.io tzdata && \
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl git sudo docker.io tzdata libicu74 && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     ln -fs /usr/share/zoneinfo/Europe/Tallinn /etc/localtime && \
     dpkg-reconfigure --frontend noninteractive tzdata
 
 RUN cp /etc/sudoers /etc/sudoers.orig && \
     echo "dev ALL=(ALL) NOPASSWD: /usr/bin/chown root\:docker /var/run/docker.sock" >> /etc/sudoers && \
+    echo "dev ALL=(ALL) NOPASSWD: /home/dev/actions-runner/bin/installdependencies.sh" >> /etc/sudoers && \
     visudo -c
 
 RUN groupadd -g ${DEV_GID} dev && \
@@ -35,6 +36,11 @@ RUN curl -fsSL -o runner.tar.gz \
     tar xzf runner.tar.gz && \
     rm runner.tar.gz
 
+USER root
+RUN /home/dev/actions-runner/bin/installdependencies.sh && \
+    echo '#!/bin/bash' > /home/dev/actions-runner/bin/installdependencies.sh && \
+    echo 'echo "Dependencies already installed at build time, skipping."' >> /home/dev/actions-runner/bin/installdependencies.sh
+USER dev
 COPY --chown=dev:dev start.sh /home/dev/start.sh
 RUN chmod +x /home/dev/start.sh
 
