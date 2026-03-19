@@ -12,7 +12,6 @@ cd /home/dev/actions-runner
     --url "${REPO}" \
     --token "${RUNNER_TOKEN}" \
     --name "${RUNNER_NAME}" \
-    --workdir "${RUNNER_WORKDIR}" \
     --unattended \
     --replace
 
@@ -26,4 +25,4 @@ trap cleanup SIGTERM SIGINT
 
 ./run.sh &
 RUNNER_PID=$!
-wait RUNNER_PID
+wait $RUNNER_PID
