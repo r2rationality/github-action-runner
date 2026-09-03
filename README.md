@@ -10,6 +10,7 @@
 ```bash
 docker run \
   -v /var/run/docker.sock:/var/run/docker.sock \
+  -e RUNNER_NAME=your-ci-1 \
   -e RUNNER_TOKEN=<token> \
   -e RUNNER_WORKDIR=/tmp/runner \
   -e REPO=https://github.com/org/repo \
