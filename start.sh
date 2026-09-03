@@ -12,6 +12,7 @@ cd /home/dev/actions-runner
     --url "${REPO}" \
     --token "${RUNNER_TOKEN}" \
     --name "${RUNNER_NAME}" \
+    --work ${RUNNER_WORKDIR} \
     --unattended \
     --replace
 
