@@ -4,12 +4,13 @@ sudo chown root:docker /var/run/docker.sock
 
 : "${RUNNER_TOKEN:?RUNNER_TOKEN environment variable is required}"
 : "${RUNNER_WORKDIR:?RUNNER_WORKDIR environment variable is required}"
-: "${REPO:?REPO environment variable is required}"
+RUNNER_URL="${RUNNER_URL:-${REPO:-}}"
+: "${RUNNER_URL:?RUNNER_URL environment variable is required (or legacy REPO)}"
 RUNNER_NAME="${RUNNER_NAME:-dockerized-runner-$(hostname)}"
 
 cd /home/dev/actions-runner
 ./config.sh \
-    --url "${REPO}" \
+    --url "${RUNNER_URL}" \
     --token "${RUNNER_TOKEN}" \
     --name "${RUNNER_NAME}" \
     --work ${RUNNER_WORKDIR} \
